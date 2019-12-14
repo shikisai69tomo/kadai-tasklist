@@ -28,10 +28,11 @@
       </div>
 
       <%= f.submit 'Sign up', class: 'btn btn-primary btn-block' %>
-      
-      <%= form_with(model: @user, local: true) do |f| %>
-      <%= render 'layouts/error_messages', model: f.object %>
-      
     <% end %>
   </div>
 </div>
+
+       <%= form_with(model: @user, local: true) do |f| %>
+       <%= render 'layouts/error_messages', model: f.object %>
+       
+       <% end %>
