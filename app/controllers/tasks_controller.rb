@@ -30,7 +30,6 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = current_user.tasks.build(task_params)
     
       if @task.update_attributes(task_params)
         flash[:success] = 'Task は正常に更新されました'
