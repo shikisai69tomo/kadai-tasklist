@@ -1,6 +1,9 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in #全アクションにログインが必要
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
+  
+  
   
   def index
     @tasks = current_user.tasks.order(created_at: :desc) #タスク一覧を作成順に表示
@@ -20,7 +23,6 @@ class TasksController < ApplicationController
       flash[:success] = 'タスクが投稿されました'
       redirect_to root_path
     else
-      @task = current_user.tasks.build(task_params)
       flash[:danger] = 'タスクが投稿されません'
       render :new
     end
@@ -30,8 +32,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    
-      if @task.update_attributes(task_params)
+      if @task.update(task_params)
         flash[:success] = 'Task は正常に更新されました'
         redirect_to @task
       else
@@ -60,6 +61,11 @@ class TasksController < ApplicationController
     params.require(:task).permit(:content, :status)
   end
   
-  
+  def correct_user
+    @task = current_user.tasks.find_by(id: params[:id])
+    unless @task
+      redirect_to root_url
+    end
+  end
   
 end
